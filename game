@@ -1,0 +1,34 @@
+import pygame
+from pygame.locals import *
+
+pygame.init()
+screenwidth = 800
+screenheight = 600
+cellwidth=40
+cellheight=40
+boardwidth=400
+boardheight=400
+black= (  0,   0,   0)
+white  = (255, 255, 255)
+green  = (  0, 204,   0)
+gray  = ( 60,  60,  60)
+blue  = (  0,  50, 255)
+yellow = (255, 255,   0)
+darkgray =( 40,  40,  40)
+
+screen = pygame.display.set_mode((screenwidth, screenheight))
+font = pygame.font.Font('freesansbold.ttf', 20)
+largefont = pygame.font.Font('freesansbold.ttf', 50)
+pygame.display.update()
+pygame.display.set_caption("Battleships")
+
+def positionvalues(positionstiles):
+    positionvalues = [[positionstiles] * 400 for i in xrange(boardwidth)]
+    return positionvalues
+
+done = False
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
