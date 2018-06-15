@@ -2,12 +2,12 @@ import pygame
 from pygame.locals import *
 
 screenwidth = 800
-screenheight = 600
-cellwidth=40
-cellheight=40
+screenheight = 800
+cellwidth=30
+cellheight=30
 boardwidth=400
 boardheight=400
-margin=10
+margin=5
 black= (  0,   0,   0)
 white  = (255, 255, 255)
 green  = (  0, 204,   0)
@@ -49,6 +49,12 @@ while not done:
                 if grid[row][column] == 1:
                     color = blue
                 pygame.draw.rect(screen, color,[(margin + cellwidth) * column + margin,(margin + cellheight) * row + margin, cellwidth,cellheight])
+    for row in range(10):
+            for column in range(10):
+                color = white
+                if grid[row][column] == 1:
+                    color = blue
+                pygame.draw.rect(screen, color,[(margin + cellwidth) * column + margin,(margin + cellheight) * (row+11) + margin, cellwidth,cellheight])
     clock.tick(60)
     pygame.display.update()
 
