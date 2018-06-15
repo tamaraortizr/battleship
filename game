@@ -1,13 +1,13 @@
 import pygame
 from pygame.locals import *
 
-pygame.init()
 screenwidth = 800
 screenheight = 600
 cellwidth=40
 cellheight=40
 boardwidth=400
 boardheight=400
+margin=10
 black= (  0,   0,   0)
 white  = (255, 255, 255)
 green  = (  0, 204,   0)
@@ -15,20 +15,41 @@ gray  = ( 60,  60,  60)
 blue  = (  0,  50, 255)
 yellow = (255, 255,   0)
 darkgray =( 40,  40,  40)
+grid=[]
+
+for row in range(10):
+    grid.append([])
+    for column in range(10):
+        grid[row].append(0)
+
+pygame.init()
 
 screen = pygame.display.set_mode((screenwidth, screenheight))
 font = pygame.font.Font('freesansbold.ttf', 20)
 largefont = pygame.font.Font('freesansbold.ttf', 50)
-pygame.display.update()
-pygame.display.set_caption("Battleships")
-
-def positionvalues(positionstiles):
-    positionvalues = [[positionstiles] * 400 for i in xrange(boardwidth)]
-    return positionvalues
+pygame.display.set_caption("Battleship")
 
 done = False
+clock = pygame.time.Clock()
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        elif event.type == MOUSEBUTTONDOWN:
+            position= pygame.mouse.get_pos()
+            column = position[0] // (cellwidth + margin)
+            row = position[1] // (cellheight + margin)
+            grid[row][column]=1
+            print("Click ", position, "Grid coordinates: ", row, column)
+    screen.fill(black)
+    for row in range(10):
+            for column in range(10):
+                color = white
+                if grid[row][column] == 1:
+                    color = blue
+                pygame.draw.rect(screen, color,[(margin + cellwidth) * column + margin,(margin + cellheight) * row + margin, cellwidth,cellheight])
+    clock.tick(60)
+    pygame.display.update()
 
+pygame.quit()
