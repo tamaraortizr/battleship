@@ -1,0 +1,79 @@
+import pygame
+from pygame.locals import *
+
+screenwidth = 800
+screenheight = 800
+cellwidth=30
+cellheight=30
+boardwidth=400
+boardheight=400
+margin=5
+black= (  0,   0,   0)
+white  = (255, 255, 255)
+green  = (  0, 204,   0)
+gray  = ( 60,  60,  60)
+blue  = (  0,  50, 255)
+yellow = (255, 255,   0)
+darkgray =( 40,  40,  40)
+brick = ( 178, 34, 34)
+
+gridshoot=[]
+for rowshoot in range(10):
+    gridshoot.append([])
+    for column in range(10):
+        gridshoot[rowshoot].append(0)
+gridships=[]
+for rowships in range(10):
+    gridships.append([])
+    for columnships in range(10):
+        gridships[rowships].append(0)
+
+pygame.init()
+
+screen = pygame.display.set_mode((screenwidth, screenheight))
+font = pygame.font.Font('freesansbold.ttf', 20)
+largefont = pygame.font.Font('freesansbold.ttf', 50)
+pygame.display.set_caption("Battleship")
+
+clock = pygame.time.Clock()
+
+def board():
+    done = False
+    while not done:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+            if event.type == MOUSEBUTTONDOWN:
+                x,y=pygame.mouse.get_pos()
+                if x<(screenheight/2):
+                    positionshoot= pygame.mouse.get_pos()
+                    columnshoot = positionshoot[0] // (cellwidth + margin)
+                    rowshoot = positionshoot[1] // (cellheight + margin)
+                    gridshoot[rowshoot][columnshoot]=1
+                    print("Click ", positionshoot, "Shooting coordinates: ", rowshoot, columnshoot)
+                if x>(screenheight/2) :
+                    positionships= pygame.mouse.get_pos()
+                    columnships = positionships[0] // (cellwidth + margin)
+                    rowships = positionships[1] // (cellheight + margin)
+                    gridships[rowships][columnships]=1
+                    print("   Click ", positionships, "Ship coordinates: ", rowships, columnships)
+        screen.fill(black)
+
+        for rowshoot in range(10):
+                for columnshoot in range(10):
+                    color = white
+                    if gridshoot[rowshoot][columnshoot] == 1:
+                        color = brick
+                    pygame.draw.rect(screen, color,[(margin + cellwidth) * columnshoot + margin,(margin + cellheight) * rowshoot + margin, cellwidth,cellheight])
+
+        for rowships in range(10):
+                for columnships in range(10):
+                    color = white
+                    if gridships[rowships][columnships] == 1:
+                        color = gray
+                    pygame.draw.rect(screen, color,[(margin + cellwidth) * columnships + margin,(margin + cellheight) * (rowships+11) + margin, cellwidth,cellheight])
+        clock.tick(60)
+        pygame.display.update()
+
+board()
+pygame.quit()
