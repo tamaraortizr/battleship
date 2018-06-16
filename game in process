@@ -3,8 +3,7 @@ from pygame.locals import *
 
 screenwidth = 800
 screenheight = 800
-cellwidth=30
-cellheight=30
+cellsize=30
 boardwidth=400
 boardheight=400
 margin=5
@@ -28,6 +27,8 @@ for rowships in range(10):
     for columnships in range(10):
         gridships[rowships].append(0)
 
+done=False
+
 pygame.init()
 
 screen = pygame.display.set_mode((screenwidth, screenheight))
@@ -37,43 +38,43 @@ pygame.display.set_caption("Battleship")
 
 clock = pygame.time.Clock()
 
-def board():
-    done = False
-    while not done:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                done = True
-            if event.type == MOUSEBUTTONDOWN:
-                x,y=pygame.mouse.get_pos()
-                if x<(screenheight/2):
-                    positionshoot= pygame.mouse.get_pos()
-                    columnshoot = positionshoot[0] // (cellwidth + margin)
-                    rowshoot = positionshoot[1] // (cellheight + margin)
-                    gridshoot[rowshoot][columnshoot]=1
-                    print("Click ", positionshoot, "Shooting coordinates: ", rowshoot, columnshoot)
-                if x>(screenheight/2) :
-                    positionships= pygame.mouse.get_pos()
-                    columnships = positionships[0] // (cellwidth + margin)
-                    rowships = positionships[1] // (cellheight + margin)
-                    gridships[rowships][columnships]=1
-                    print("   Click ", positionships, "Ship coordinates: ", rowships, columnships)
-        screen.fill(black)
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+        elif event.type == MOUSEBUTTONDOWN:
+            x, y = pygame.mouse.get_pos()
+            if y <= (boardheight):
+                positionshoot = pygame.mouse.get_pos()
+                columnshoot = positionshoot[0] // (cellsize + margin)
+                rowshoot = positionshoot[1] // (cellsize + margin)
+                gridshoot[rowshoot][columnshoot] = 1
+                print("Click ", positionshoot, "Shooting coordinates: ", rowshoot, columnshoot)
+            if y > (boardheight):
+                positionships = pygame.mouse.get_pos()
+                columnships = positionships[0] // (cellsize + margin)
+                rowships = positionships[1] // (cellsize + margin)
+                gridships[rowships][columnships] = 1
+                print("   Click ", positionships, "Ship coordinates: ", rowships, columnships)
+    screen.fill(black)
 
-        for rowshoot in range(10):
-                for columnshoot in range(10):
-                    color = white
-                    if gridshoot[rowshoot][columnshoot] == 1:
-                        color = brick
-                    pygame.draw.rect(screen, color,[(margin + cellwidth) * columnshoot + margin,(margin + cellheight) * rowshoot + margin, cellwidth,cellheight])
+    for row in range(10):
+        for column in range(10):
+            color = white
+            if gridshoot[row][column] == 1:
+                color = brick
+            pygame.draw.rect(screen, color,
+                             [(margin + cellsize) * column + margin, (margin + cellsize) * row + margin,
+                              cellsize, cellsize])
 
-        for rowships in range(10):
-                for columnships in range(10):
-                    color = white
-                    if gridships[rowships][columnships] == 1:
-                        color = gray
-                    pygame.draw.rect(screen, color,[(margin + cellwidth) * columnships + margin,(margin + cellheight) * (rowships+11) + margin, cellwidth,cellheight])
-        clock.tick(60)
-        pygame.display.update()
+    for row in range(10):
+        for column in range(10):
+            color = white
+            if gridships[row][column] == 1:
+                color = gray
+            pygame.draw.rect(screen, color, [(margin + cellsize) * column + margin,
+                                             (margin + cellsize) * (row + 11) + margin, cellsize, cellsize])
+    clock.tick(60)
+    pygame.display.flip()
 
-board()
 pygame.quit()
