@@ -18,11 +18,11 @@ white = (255, 255, 255)
 usuario= "usuario"
 computadora= "computadora"
 none= None
-purple= "morado"
-green= "verde"
+morado= "morado"
+verde= "verde"
 
 def main():
-    global clock, window, morados, verdes, fichamoradaimg, fichaverdeimg, tableroimg
+    global clock, window, morados, verdes, fichamoradaimg, fichaverdeimg, tableroimg, ganasteimg, ganasterect, perdisteimg, empateimg, instruccionesimg, instruccionesrect, juego
     pygame.init()
     clock=pygame.time.Clock()
     window=pygame.display.set_mode(windowwidth, windowheight)
@@ -35,23 +35,90 @@ def main():
     fichaverdeimg=pygame.transform.smoothscale(fichaverdeimg, (fichat, fichat))
     tableroimg=pygame.image.load('tablero.png')
     tableroimg=pygame.transform.smoothscale(tableroimg, (fichat, fichat))
+    ganasteimg=pygame.image.load('ganaste.png')
+    perdisteimg=pygame.image.load('perdiste.png')
+    empateimg=pygame.image.load('empate.png')
+    ganasterect=ganasteimg.get_rect()
+    ganasterect.center=(int(windowwidth/2),int(windowheight/2))
+    instruccionesimg=pygame.image.load('instrucciones.png')
+    instruccionesrect=instruccionesimg.get_rect()
+    instruccionesrect.left=morados.right+10
+    instruccionesrect.centery=morados.centery
 
     juego= True
     while True:
         run(juego)
         juego=False
-        
+
 def run():
     if juego:
         turno=computadora
-        h=True
+        mostrarinstrucciones=True
     else:
         if random.randint(0, 1)==0
             turno=computadora
         else:
             turno=usuario
-        h=False
-    
+        mostrarinstrucciones=False
     tablero=nuevotablero()
+
+    while True:
+        if turno == usuario:
+            turnousuario(tablero, mostrarinstrucciones)
+            if mostrarinstrucciones:
+                mostrarinstrucciones = False
+            if ganador(tablero, morado):
+                imagen = ganasteimg
+                break
+            turno = computadora
+        else:
+            columna = turnocomputadora(tablero)
+            animarcomputadora(tablero, columna)
+            efectuarjugada(tablero, verde, columna)
+            if ganador(tablero, verde):
+                imagen = perdisteimg
+                break
+            turno = usuario
+
+        if tablerolleno(tablero):
+            imagen = empateimg
+            break
+
+    while True:
+        formartablero(tablero)
+        window.blit(ganasteimg, ganasterect)
+        pygame.display.update()
+        clock.tick()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == MOUSEBUTTONUP:
+                return
+
+def efectuarjugada(tabla, jugador, columna):
+
+def formartablero(tabla, fichaextra=None):
+
+def nuevotablero():
+
+def turnousuario(tabla, primermovimiento):
+
+def animarficha(tabla, columna, color):
+
+def animarcomputadora(tabla):
+
+def turnocomputadora(tabla):
+
+def posiblesmovimientos(tabla, espacio, prever):
+
+def menorespaciolibre(tabla, columna):
+
+def movimientovalido(tabla, columna):
+
+def tablerolleno(tabla):
     
-    
+def ganador(tabla, espacio):
+
+if __name__ == '__main__':
+    main()
