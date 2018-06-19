@@ -1,0 +1,57 @@
+import random, copy, sys, pygame
+from pygame.locals import*
+
+ancho =7
+altura =6
+dificultad = 2
+fichat = 80
+
+fps = 40
+windowwidth = 800
+windowheight = 800
+xmargin = int((windowwidth-ancho*fichat)/2)
+ymargin = int((windowwidth-altura*fichat)/2)
+
+blue = (100, 149, 237)
+white = (255, 255, 255)
+
+usuario= "usuario"
+computadora= "computadora"
+none= None
+purple= "morado"
+green= "verde"
+
+def main():
+    global clock, window, morados, verdes, fichamoradaimg, fichaverdeimg, tableroimg
+    pygame.init()
+    clock=pygame.time.Clock()
+    window=pygame.display.set_mode(windowwidth, windowheight)
+    pygame.display.set_caption("Connect 4!")
+    morados=pygame.Rect(int(fichat / 2), windowheight - int(3 * fichat / 2), fichat, fichat)
+    verdes=pygame.Rect(windowwidth - int(3 * fichat / 2), windowheight - int(3 * fichat/ 2), fichat, fichat)
+    fichamoradaimg=pygame.image.load('ficha_morada.png')
+    fichamoradaimg=pygame.transform.smoothscale(fichamoradaimg, (fichat, fichat))
+    fichaverdeimg=pygame.image.load('ficha_verde.png')
+    fichaverdeimg=pygame.transform.smoothscale(fichaverdeimg, (fichat, fichat))
+    tableroimg=pygame.image.load('tablero.png')
+    tableroimg=pygame.transform.smoothscale(tableroimg, (fichat, fichat))
+
+    juego= True
+    while True:
+        run(juego)
+        juego=False
+        
+def run():
+    if juego:
+        turno=computadora
+        h=True
+    else:
+        if random.randint(0, 1)==0
+            turno=computadora
+        else:
+            turno=usuario
+        h=False
+    
+    tablero=nuevotablero()
+    
+    
