@@ -3,8 +3,7 @@ from pygame.locals import *
 
 screenwidth = 800
 screenheight = 800
-cellwidth=30
-cellheight=30
+cellsize=40
 boardwidth=400
 boardheight=400
 margin=5
@@ -15,12 +14,15 @@ gray  = ( 60,  60,  60)
 blue  = (  0,  50, 255)
 yellow = (255, 255,   0)
 darkgray =( 40,  40,  40)
-grid=[]
+brick = ( 178, 34, 34)
 
-for row in range(10):
-    grid.append([])
-    for column in range(10):
-        grid[row].append(0)
+gridships=[]
+for rowships in range(10):
+    gridships.append([])
+    for columnships in range(10):
+        gridships[rowships].append(0)
+
+done=False
 
 pygame.init()
 
@@ -29,7 +31,6 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 largefont = pygame.font.Font('freesansbold.ttf', 50)
 pygame.display.set_caption("Battleship")
 
-done = False
 clock = pygame.time.Clock()
 
 while not done:
@@ -37,24 +38,21 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
         elif event.type == MOUSEBUTTONDOWN:
-            position= pygame.mouse.get_pos()
-            column = position[0] // (cellwidth + margin)
-            row = position[1] // (cellheight + margin)
-            grid[row][column]=1
-            print("Click ", position, "Grid coordinates: ", row, column)
+                positionships = pygame.mouse.get_pos()
+                columnships = positionships[0] // (cellsize + margin)
+                rowships = positionships[1] // (cellsize + margin)
+                gridships[rowships][columnships] = 1
+                print("   Click ", positionships, "Ship coordinates: ", rowships, columnships)
     screen.fill(black)
+
+
     for row in range(10):
-            for column in range(10):
-                color = white
-                if grid[row][column] == 1:
-                    color = blue
-                pygame.draw.rect(screen, color,[(margin + cellwidth) * column + margin,(margin + cellheight) * row + margin, cellwidth,cellheight])
-    for row in range(10):
-            for column in range(10):
-                color = white
-                if grid[row][column] == 1:
-                    color = blue
-                pygame.draw.rect(screen, color,[(margin + cellwidth) * column + margin,(margin + cellheight) * (row+11) + margin, cellwidth,cellheight])
+        for column in range(10):
+            color = white
+            if gridships[row][column] == 1:
+                color = gray
+            pygame.draw.rect(screen, color, [(margin + cellsize) * column + margin,
+                                             (margin + cellsize) * (row) + margin, cellsize, cellsize])
     clock.tick(60)
     pygame.display.update()
 
