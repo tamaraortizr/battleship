@@ -5,14 +5,14 @@ ancho =7
 altura =6
 assert ancho >= 4 and altura >= 4
 dificultad = 2
-fichat = 80
+fichat = 50
 
-fps = 40
-windowwidth = 700
-windowheight = 700
+fps = 30
+windowwidth = 640
+windowheight = 480
 xmargin = int((windowwidth-ancho*fichat)/2)
-ymargin = int((windowwidth-altura*fichat)/2)
-
+ymargin = int((windowwidth-altura*fichat)/4)
+assert ancho >= 4 and altura >= 4, 'Board must be at least 4x4.'
 blue = (100, 149, 237)
 white = (255, 255, 255)
 
@@ -156,7 +156,7 @@ def turnousuario(tabla, primermovimiento):
                     columna=int((fichax - xmargin) / fichat)
                     if movimientovalido(tabla,columna):
                         animarficha(tabla, columna, morado)
-                        tabla[columna][menorespaciolibre(tabla, columna)] = morado
+                        tabla[columna][menorespaciolibre(tabla,columna)] = morado
                         formartablero(tabla)
                         pygame.display.update()
                         return
