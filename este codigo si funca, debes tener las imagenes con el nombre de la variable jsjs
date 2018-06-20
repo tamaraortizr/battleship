@@ -10,11 +10,13 @@ fichat = 50
 fps = 30
 windowwidth = 640
 windowheight = 480
-xmargin = int((windowwidth-ancho*fichat)/2)
-ymargin = int((windowwidth-altura*fichat)/4)
-assert ancho >= 4 and altura >= 4, 'Board must be at least 4x4.'
+xmargin = int((windowwidth - ancho * fichat)/2)
+ymargin = int((windowheight - altura * fichat)/2)
+
 blue = (100, 149, 237)
 white = (255, 255, 255)
+blue=blue
+textcolor=white
 
 usuario= "usuario"
 computadora= "computadora"
@@ -23,11 +25,14 @@ morado= "morado"
 verde= "verde"
 
 def main():
-    global clock, window, morados, verdes, fichamoradaimg, fichaverdeimg, tableroimg, ganasteimg, ganasterect, perdisteimg, empateimg, instruccionesimg, instruccionesrect, juego
+    global clock, window, morados, verdes, fichamoradaimg, fichaverdeimg
+    global tableroimg, ganasteimg, ganasterect, perdisteimg, empateimg
+    global instruccionesimg, instruccionesrect
     pygame.init()
     clock=pygame.time.Clock()
     window=pygame.display.set_mode((windowwidth, windowheight))
     pygame.display.set_caption("Connect 4!")
+
     morados=pygame.Rect(int(fichat / 2), windowheight - int(3 * fichat / 2), fichat, fichat)
     verdes=pygame.Rect(windowwidth - int(3 * fichat / 2), windowheight - int(3 * fichat/ 2), fichat, fichat)
     fichamoradaimg=pygame.image.load('ficha_morada.png')
@@ -36,11 +41,13 @@ def main():
     fichaverdeimg=pygame.transform.smoothscale(fichaverdeimg, (fichat, fichat))
     tableroimg=pygame.image.load('tablero.png')
     tableroimg=pygame.transform.smoothscale(tableroimg, (fichat, fichat))
+
     ganasteimg=pygame.image.load('ganaste.png')
     perdisteimg=pygame.image.load('perdiste.png')
     empateimg=pygame.image.load('empate.png')
     ganasterect=ganasteimg.get_rect()
     ganasterect.center=(int(windowwidth/2),int(windowheight/2))
+
     instruccionesimg=pygame.image.load('instrucciones.png')
     instruccionesrect=instruccionesimg.get_rect()
     instruccionesrect.left=morados.right+10
@@ -89,11 +96,11 @@ def run(juego):
 
     while True:
         formartablero(tablero)
-        window.blit(ganasteimg, ganasterect)
+        window.blit(imagen, ganasterect)
         pygame.display.update()
         clock.tick()
         for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+            if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == MOUSEBUTTONUP:
@@ -102,11 +109,11 @@ def run(juego):
 
 def efectuarjugada(tabla, jugador, columna):
     menor=menorespaciolibre(tabla,columna)
-    if menor !=1:
+    if menor != -1:
         tabla[columna][menor]=jugador
 
 
-def formartablero(tabla, fichaextra=None):
+def formartablero(tabla, fichaextra = None):
     window.fill(blue)
 
     espaciorect = pygame.Rect(0, 0, fichat, fichat)
@@ -151,8 +158,11 @@ def turnousuario(tabla, primermovimiento):
                 fichax, fichay = event.pos
             elif event.type == MOUSEMOTION and moverficha:
                 fichax, fichay = event.pos
-            elif event.type == MOUSEBUTTONUP and moverficha:
+                print("fichay:",str(fichay), "  fichax:", str(fichax))
+            elif event.type == MOUSEBUTTONUP and moverficha :
+                print("fichay:",str(fichay), "  fichax:", str(fichax))
                 if fichay < ymargin and fichax > xmargin and fichax < ancho - xmargin:
+
                     columna=int((fichax - xmargin) / fichat)
                     if movimientovalido(tabla,columna):
                         animarficha(tabla, columna, morado)
@@ -160,12 +170,10 @@ def turnousuario(tabla, primermovimiento):
                         formartablero(tabla)
                         pygame.display.update()
                         return
-                fichax, fichay=None, None
+                fichax, fichay= None, None
                 moverficha=False
-
         if fichax != None and fichay != None:
             formartablero(tabla,{'x':fichax - int(fichat / 2),'y':fichay - int(fichat / 2), 'color':morado})
-
         else:
             formartablero(tabla)
 
@@ -179,7 +187,7 @@ def turnousuario(tabla, primermovimiento):
 def animarficha(tabla, columna, color):
     x = xmargin + columna * fichat
     y = ymargin - fichat
-    velocidad = 1.0
+    velocidad = 0.5
 
     menor=menorespaciolibre(tabla, columna)
 
@@ -196,7 +204,7 @@ def animarficha(tabla, columna, color):
 def animarcomputadora(tabla, columna):
     x = verdes.left
     y = verdes.top
-    rapidez = 1.0
+    rapidez = 0.5
     while y > (ymargin - fichat):
         y -= int(rapidez)
         rapidez += 0.5
@@ -204,7 +212,7 @@ def animarcomputadora(tabla, columna):
         pygame.display.update()
         clock.tick()
     y = ymargin - fichat
-    rapidez = 1.0
+    rapidez = 0.5
     while x > (xmargin + columna * fichat):
         x -= int(rapidez)
         rapidez += 0.5
@@ -259,7 +267,7 @@ def posiblesmovimientos(tabla, espacio, prever):
                         break
                     else:
                         resultados = posiblesmovimientos(copiatablero2, espacio, prever - 1)
-                        posibles[primermovimiento] += (sum(resultados) / ancho) / altura
+                        posibles[primermovimiento] += ((sum(resultados) / ancho) / altura)
     return posibles
 
 
@@ -271,7 +279,7 @@ def menorespaciolibre(tabla, columna):
 
 
 def movimientovalido(tabla, columna):
-    if columna < 0 or columna >= (ancho) or tabla[columna][0] != none:
+    if columna < 0 or columna >=ancho or tabla[columna][0] != None:
         return False
     return True
 
