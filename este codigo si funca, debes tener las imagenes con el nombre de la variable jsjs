@@ -44,7 +44,7 @@ def main():
 
     ganasteimg=pygame.image.load('ganaste.png')
     perdisteimg=pygame.image.load('perdiste.png')
-    empateimg=pygame.image.load('empate.png')
+    empateimg=pygame.image.load('ganaste.png')
     ganasterect=ganasteimg.get_rect()
     ganasterect.center=(int(windowwidth/2),int(windowheight/2))
 
@@ -160,9 +160,7 @@ def turnousuario(tabla, primermovimiento):
                 fichax, fichay = event.pos
                 print("fichay:",str(fichay), "  fichax:", str(fichax))
             elif event.type == MOUSEBUTTONUP and moverficha :
-                print("fichay:",str(fichay), "  fichax:", str(fichax))
-                if fichay < ymargin and fichax > xmargin and fichax < ancho - xmargin:
-
+                if fichay<100 and 160<fichax<490:
                     columna=int((fichax - xmargin) / fichat)
                     if movimientovalido(tabla,columna):
                         animarficha(tabla, columna, morado)
