@@ -5,14 +5,13 @@ ancho = 7
 altura = 6
 assert ancho >= 4 and altura >= 4
 dificultad = 2
-fichat = 50
+fichat = 60
 fps = 30
 windowwidth = 800
-windowheight = 800
+windowheight = 700
 xmargin = int((windowwidth - ancho * fichat)/2)
 ymargin = int((windowheight - altura * fichat)/2)
 blue = (100, 149, 237)
-white = (255, 255, 255)
 usuario = "usuario"
 computadora = "computadora"
 none = None
@@ -40,9 +39,10 @@ def main():
     ganasterect = ganasteimg.get_rect()
     ganasterect.center = (int(windowwidth / 2), int(windowheight / 2))
     instruccionesimg = pygame.image.load('instrucciones.png')
+    instruccionesimg = pygame.transform.smoothscale(instruccionesimg, (150, 120))
     instruccionesrect = instruccionesimg.get_rect()
     instruccionesrect.left = morados.right + 10
-    instruccionesrect.centery = morados.centery
+    instruccionesrect.centery = morados.centery - 10
     juego= True
 
     while True:
@@ -144,7 +144,7 @@ def turnousuario(tabla, primermovimiento):
             elif event.type == MOUSEMOTION and moverficha:
                 fichax, fichay = event.pos
             elif event.type == MOUSEBUTTONUP and moverficha :
-                if fichay < 290 and 230 < fichax < 570:
+                if fichay < 190 and 210 < fichax < 590:
                     columna = int((fichax - xmargin) / fichat)
                     if movimientovalido(tabla,columna):
                         animarficha(tabla, columna, morado)
